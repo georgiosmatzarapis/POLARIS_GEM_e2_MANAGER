@@ -1,0 +1,16 @@
+Language: Cpp
+BasedOnStyle: LLVM
+UseTab: Never
+IndentWidth: 2
+TabWidth: 1
+AccessModifierOffset: -1
+ColumnLimit: 80
+PointerAlignment: Left
+ReferenceAlignment: Left
+BreakConstructorInitializers: BeforeColon
+PackConstructorInitializers: CurrentLine
+AlignAfterOpenBracket: Align
+SpaceBeforeParens: ControlStatements
+AlwaysBreakTemplateDeclarations: Yes
+IndentCaseLabels: true
+ShortNamespaceLines: 0
