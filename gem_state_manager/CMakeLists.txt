@@ -22,6 +22,9 @@ set(Sources
  src/gem_state_manager_node.cpp
  src/callback_handlers.cpp
  src/state_manager.cpp
+ src/states/idle.cpp
+ src/states/running.cpp
+ src/states/error.cpp
 )
 
 add_executable(${PROJECT_NAME}_node ${Sources})

@@ -2,36 +2,23 @@
 
 #pragma once
 
-#include <mutex>
+#include "gem_state_manager/states/robot_state.hpp"
 
 namespace gem_state_manager {
 
 class CallbackHandlers;
 
 class StateManager final {
-  enum class RobotState { IDLE, RUNNING, ERROR };
-
  public:
   explicit StateManager(CallbackHandlers& callbackHandlers);
 
-  enum class Event {
-    BATTERY_LOW,
-    TEMPERATURE_HIGH,
-    GPS_INACCURATE,
-    SIGNAL_LOST,
-    SIGNAL_LOW,
-    EMERGENCY
-  };
-
   void handleEvent(Event event, const std::string& data);
-  [[nodiscard]] RobotState getCurrentState() const noexcept;
+  void setState(std::unique_ptr<RobotState> newRobotState) noexcept;
+  [[nodiscard]] std::string getCurrentState() const noexcept;
 
  private:
   mutable std::mutex stateMutex_;
-  RobotState currentState_{RobotState::IDLE};
-
-  std::string eventToString(Event event) const noexcept;
-  void setState(RobotState state) noexcept;
+  std::unique_ptr<RobotState> currentState_;
 };
 
 } // namespace gem_state_manager

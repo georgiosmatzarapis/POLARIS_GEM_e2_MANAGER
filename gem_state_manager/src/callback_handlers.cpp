@@ -33,7 +33,7 @@ void CallbackHandlers::initSubscriptions(StateManager& stateManager) {
 
 // PRIVATE API
 
-using enum StateManager::Event;
+using enum Event;
 
 void CallbackHandlers::batteryCallback(const std_msgs::Float32::ConstPtr& msg) {
   if (msg->data <= BATTERY_LIMIT) {
