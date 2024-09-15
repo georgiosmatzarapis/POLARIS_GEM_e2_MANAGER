@@ -8,20 +8,22 @@
 int main(int argc, char** argv) {
   ros::init(argc, argv, "gem_mock_sensors");
 
-  ros::NodeHandle nodeHandler{};
+  ros::NodeHandle nodeHandle{};
 
   ros::Publisher batteryPublisher{
-      nodeHandler.advertise<std_msgs::Float32>("/mock/battery_level", 1000)};
+      nodeHandle.advertise<std_msgs::Float32>("/mock/battery_level", 1000)};
   ros::Publisher temperaturePublisher{
-      nodeHandler.advertise<std_msgs::Float32>("/mock/temperature", 1000)};
+      nodeHandle.advertise<std_msgs::Float32>("/mock/temperature", 1000)};
   ros::Publisher gpsAccuracyPublisher{
-      nodeHandler.advertise<std_msgs::Float32>("/mock/gps_accuracy", 1000)};
+      nodeHandle.advertise<std_msgs::Float32>("/mock/gps_accuracy", 1000)};
   ros::Publisher signalPublisher{
-      nodeHandler.advertise<std_msgs::Int32>("/mock/signal_strength", 1000)};
+      nodeHandle.advertise<std_msgs::Int32>("/mock/signal_strength", 1000)};
   ros::Publisher emergencyButtonPublisher{
-      nodeHandler.advertise<std_msgs::Bool>("/mock/emergency_button", 1000)};
+      nodeHandle.advertise<std_msgs::Bool>("/mock/emergency_button", 1000)};
 
   ros::Rate loopRate{1};
+
+  ROS_INFO("Node started");
 
   while (ros::ok()) {
     std_msgs::Float32 batteryMsg;
