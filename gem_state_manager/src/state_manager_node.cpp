@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     gem_state_manager::CallbackHandlers callbackHandlers{nodeHandle};
     gem_state_manager::StateManager stateManager{callbackHandlers};
 
-    ROS_INFO("Node started");
+    ROS_INFO("State-manager node started");
 
     ros::AsyncSpinner spinner(4);
     spinner.start();

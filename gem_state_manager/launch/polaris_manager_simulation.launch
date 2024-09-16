@@ -1,0 +1,8 @@
+<launch>
+ <node name="battery_node" pkg="gem_mock_sensors" type="battery_node" output="screen" />
+ <node name="temperature_node" pkg="gem_mock_sensors" type="temperature_node" output="screen" />
+ <node name="gps_node" pkg="gem_mock_sensors" type="gps_node" output="screen" />
+ <node name="signal_node" pkg="gem_mock_sensors" type="signal_node" output="screen" />
+ <node name="emergency_stop_node" pkg="gem_mock_sensors" type="emergency_stop_node" output="screen" />
+ <node name="state_manager_node" pkg="gem_state_manager" type="state_manager_node" output="screen" />
+</launch>

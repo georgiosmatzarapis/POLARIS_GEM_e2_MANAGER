@@ -19,7 +19,7 @@ include_directories(
 )
 
 set(Sources
- src/gem_state_manager_node.cpp
+ src/state_manager_node.cpp
  src/callback_handlers.cpp
  src/state_manager.cpp
  src/states/idle.cpp
@@ -27,16 +27,16 @@ set(Sources
  src/states/error.cpp
 )
 
-add_executable(${PROJECT_NAME}_node ${Sources})
+add_executable(state_manager_node ${Sources})
 
-target_include_directories(${PROJECT_NAME}_node PRIVATE
+target_include_directories(state_manager_node PRIVATE
  include
 )
 
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(state_manager_node
  ${catkin_LIBRARIES}
 )
 
-install(TARGETS ${PROJECT_NAME}_node
+install(TARGETS state_manager_node
  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

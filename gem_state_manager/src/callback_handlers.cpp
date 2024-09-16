@@ -53,7 +53,7 @@ void CallbackHandlers::gpsAccuracyCallback(
   static ros::Time lastErrorTime{ros::Time::now()};
   static bool gpsErrorActive{false};
 
-  if (msg->data < GPS_LIMIT) {
+  if (msg->data > GPS_LIMIT) {
     if (!gpsErrorActive) {
       lastErrorTime = ros::Time::now();
       gpsErrorActive = true;

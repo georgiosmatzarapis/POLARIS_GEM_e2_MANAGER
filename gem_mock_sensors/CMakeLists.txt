@@ -18,12 +18,21 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME}_node src/gem_mock_sensors_node.cpp)
+add_executable(battery_node src/battery_node.cpp)
+target_link_libraries(battery_node ${catkin_LIBRARIES})
 
-target_link_libraries(${PROJECT_NAME}_node
- ${catkin_LIBRARIES}
-)
+add_executable(temperature_node src/temperature_node.cpp)
+target_link_libraries(temperature_node ${catkin_LIBRARIES})
 
-install(TARGETS ${PROJECT_NAME}_node
+add_executable(gps_node src/gps_node.cpp)
+target_link_libraries(gps_node ${catkin_LIBRARIES})
+
+add_executable(signal_node src/signal_node.cpp)
+target_link_libraries(signal_node ${catkin_LIBRARIES})
+
+add_executable(emergency_stop_node src/emergency_stop_node.cpp)
+target_link_libraries(emergency_stop_node ${catkin_LIBRARIES})
+
+install(TARGETS battery_node temperature_node gps_node signal_node emergency_stop_node
  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
