@@ -36,6 +36,7 @@ void CallbackHandlers::initSubscriptions(StateManager& stateManager) {
 using enum Event;
 
 void CallbackHandlers::batteryCallback(const std_msgs::Float32::ConstPtr& msg) {
+  std::lock_guard<std::mutex> lock(stateManagerMutex_);
   if (msg->data <= BATTERY_LIMIT) {
     stateManagerPtr_->handleEvent(BATTERY_LOW, std::to_string(msg->data));
   }
@@ -43,6 +44,7 @@ void CallbackHandlers::batteryCallback(const std_msgs::Float32::ConstPtr& msg) {
 
 void CallbackHandlers::temperatureCallback(
     const std_msgs::Float32::ConstPtr& msg) {
+  std::lock_guard<std::mutex> lock(stateManagerMutex_);
   if (msg->data >= TEMPERATURE_LIMIT) {
     stateManagerPtr_->handleEvent(TEMPERATURE_HIGH, std::to_string(msg->data));
   }
@@ -50,6 +52,7 @@ void CallbackHandlers::temperatureCallback(
 
 void CallbackHandlers::gpsAccuracyCallback(
     const std_msgs::Float32::ConstPtr& msg) {
+  std::lock_guard<std::mutex> lock(stateManagerMutex_);
   static ros::Time lastErrorTime{ros::Time::now()};
   static bool gpsErrorActive{false};
 
@@ -66,6 +69,7 @@ void CallbackHandlers::gpsAccuracyCallback(
 }
 
 void CallbackHandlers::signalCallback(const std_msgs::Int32::ConstPtr& msg) {
+  std::lock_guard<std::mutex> lock(stateManagerMutex_);
   static ros::Time lastErrorTime{ros::Time::now()};
   static bool signalErrorActive{false};
 
@@ -90,6 +94,7 @@ void CallbackHandlers::signalCallback(const std_msgs::Int32::ConstPtr& msg) {
 
 void CallbackHandlers::emergencyButtonCallback(
     const std_msgs::Bool::ConstPtr& msg) {
+  std::lock_guard<std::mutex> lock(stateManagerMutex_);
   if (msg->data) {
     stateManagerPtr_->handleEvent(EMERGENCY, std::to_string(msg->data));
   }

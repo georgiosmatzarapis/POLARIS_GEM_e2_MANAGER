@@ -8,15 +8,17 @@
 int main(int argc, char** argv) {
   try {
     ros::init(argc, argv, "gem_state_manager");
-
     ros::NodeHandle nodeHandle{};
+
     gem_state_manager::CallbackHandlers callbackHandlers{nodeHandle};
-    gem_state_manager::StateManager stateManager{callbackHandlers};
+    gem_state_manager::StateManager stateManager{nodeHandle, callbackHandlers};
 
     ROS_INFO("State-manager node started");
 
     ros::AsyncSpinner spinner(4);
     spinner.start();
+
+    stateManager.checkVehicleAndColdStart();
 
     ros::waitForShutdown();
   } catch (const std::exception& exception) {

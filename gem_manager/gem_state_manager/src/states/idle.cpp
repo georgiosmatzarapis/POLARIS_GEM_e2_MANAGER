@@ -17,11 +17,9 @@ void IdleState::handleEvent(StateManager& stateManager, Event event,
   ROS_INFO("IdleState handling event: %s, value: %s",
            eventToString(event).c_str(), data.c_str());
 
-  if (event == EMERGENCY) {
-    stateManager.setState(std::make_unique<ErrorState>());
-  } else if (event == BATTERY_LOW || event == TEMPERATURE_HIGH ||
-             event == GPS_INACCURATE || event == SIGNAL_LOST ||
-             event == SIGNAL_LOW) {
+  if (event == BATTERY_LOW || event == TEMPERATURE_HIGH ||
+      event == GPS_INACCURATE || event == SIGNAL_LOST || event == SIGNAL_LOW ||
+      event == EMERGENCY) {
     stateManager.setState(std::make_unique<ErrorState>());
   } else {
     stateManager.setState(std::make_unique<RunningState>());

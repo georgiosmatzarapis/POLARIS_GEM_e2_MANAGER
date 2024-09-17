@@ -25,6 +25,7 @@ class CallbackHandlers final {
   ros::Subscriber gpsAccuracySubscriber_;
   ros::Subscriber signalSubscriber_;
   ros::Subscriber emergencyButtonSubscriber_;
+  std::mutex stateManagerMutex_;
 
   void batteryCallback(const std_msgs::Float32::ConstPtr& msg);
   void temperatureCallback(const std_msgs::Float32::ConstPtr& msg);
