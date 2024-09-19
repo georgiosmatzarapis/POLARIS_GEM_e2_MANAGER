@@ -15,8 +15,8 @@ namespace gem_state_manager {
 StateManager::StateManager(ros::NodeHandle& nodeHandle,
                            CallbackHandlers& callbackHandlers)
     : currentState_{std::make_unique<IdleState>()},
-      statePublisher_{
-          nodeHandle.advertise<std_msgs::String>("robot_state", 10)} {
+      statePublisher_{nodeHandle.advertise<std_msgs::String>(
+          "gem_manager/robot_state", 10)} {
   callbackHandlers.initSubscriptions(*this);
 }
 

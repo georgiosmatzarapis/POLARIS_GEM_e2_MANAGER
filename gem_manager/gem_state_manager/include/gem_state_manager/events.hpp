@@ -16,20 +16,20 @@ enum class Event {
 };
 
 inline std::string eventToString(Event event) noexcept {
-  using enum Event;
+  // using enum Event; // C++ 20 onwards
 
   switch (event) {
-    case BATTERY_LOW:
+    case Event::BATTERY_LOW:
       return "Battery Low";
-    case TEMPERATURE_HIGH:
+    case Event::TEMPERATURE_HIGH:
       return "Temperature High";
-    case GPS_INACCURATE:
+    case Event::GPS_INACCURATE:
       return "GPS Inaccurate";
-    case SIGNAL_LOST:
+    case Event::SIGNAL_LOST:
       return "Signal Lost";
-    case SIGNAL_LOW:
+    case Event::SIGNAL_LOW:
       return "Signal Low";
-    case EMERGENCY:
+    case Event::EMERGENCY:
       return "Emergency";
     default:
       return "Unknown Event";

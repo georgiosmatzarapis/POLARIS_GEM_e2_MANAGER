@@ -7,8 +7,8 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "emergency_stop_node");
   ros::NodeHandle nodeHandle{};
 
-  ros::Publisher emergencyButtonPublisher{
-      nodeHandle.advertise<std_msgs::Bool>("/mock/emergency_button", 1000)};
+  ros::Publisher emergencyButtonPublisher{nodeHandle.advertise<std_msgs::Bool>(
+      "/gem_manager/emergency_button", 1000)};
 
   ros::Rate loopRate{1};
 

@@ -7,10 +7,18 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "planner_node");
     ros::NodeHandle nodeHandle{};
 
-    gem_planner::Planner planner{nodeHandle, "wps.csv"};
-    planner.startPublishing();
+    std::string controllerType{};
+    if (!nodeHandle.getParam("/planner_node/controller_type", controllerType)) {
+      ROS_ERROR("Missing required parameter 'controller_type'");
+      return 1;
+    }
 
-    ROS_INFO("Planner node started");
+    gem_planner::Planner planner{nodeHandle, "wps.csv", controllerType};
+
+    ROS_INFO("Planner node started with controller type: %s",
+             controllerType.c_str());
+
+    planner.startPublishing();
 
     ros::shutdown();
   } catch (const std::exception& exception) {

@@ -2,21 +2,24 @@
 
 #pragma once
 
-#include <ros/ros.h>
 #include <std_msgs/String.h>
+
+#include "gem_planner/controllers/path_tracking_controller.hpp"
 
 namespace gem_planner {
 
 struct Waypoint final {
-  double x;
-  double y;
-  double yaw;
+  std::string x{};
+  std::string y{};
+  std::string yaw{};
+
+  Waypoint(std::string xVal, std::string yVal, std::string yawVal);
 };
 
 class Planner final {
  public:
-  explicit Planner(ros::NodeHandle& nodeHandle,
-                   const std::string& waypointsFile);
+  explicit Planner(ros::NodeHandle& nodeHandle, std::string waypointsFile,
+                   std::string controllerType);
 
   void startPublishing();
 
@@ -24,11 +27,10 @@ class Planner final {
   ros::Subscriber robotStateSubscriber_;
   ros::Publisher waypointPublisher_;
   std::vector<Waypoint> waypoints_{};
-  std::size_t waypointsSize_{};
   bool isHealthy_{false};
-  std::size_t currentLocation_{0};
   ros::Time lastErrorTime_{ros::Time(0)};
-  ros::Rate waypointPublishingRate_{20};
+  std::unique_ptr<PathTrackingController> pathTrackingController_{nullptr};
+  ros::Rate waypointPublishingRate_{1};
 
   void robotStateCallback(const std_msgs::String::ConstPtr& msg);
   void loadWaypoints(const std::string& filePath);
@@ -37,7 +39,7 @@ class Planner final {
   /// @brief Duration of time to wait after an error before resuming waypoint
   /// publishing. If no new errors are detected within this time frame, waypoint
   /// publishing will continue.
-  static constexpr float RECOVERY_TIME{5.0f};
+  static constexpr float RECOVERY_TIME{2.0f};
 };
 
 } // namespace gem_planner

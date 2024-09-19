@@ -7,8 +7,8 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "battery_node");
   ros::NodeHandle nodeHandle{};
 
-  ros::Publisher batteryPublisher{
-      nodeHandle.advertise<std_msgs::Float32>("/mock/battery_level", 1000)};
+  ros::Publisher batteryPublisher{nodeHandle.advertise<std_msgs::Float32>(
+      "/gem_manager/battery_level", 1000)};
 
   ros::Rate loopRate{1};
 

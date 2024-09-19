@@ -4,23 +4,46 @@
 
 #include <ros/package.h>
 
-#include <gem_manager/Waypoint.h>
-
+#include "gem_planner/controllers/pure_pursuit.hpp"
+#include "gem_planner/controllers/stanley.hpp"
 #include "gem_planner/planner.hpp"
 
 namespace gem_planner {
 
+// Waypoint struct
+
 // PUBLIC API
 
-Planner::Planner(ros::NodeHandle& nodeHandle, const std::string& waypointsFile)
+Waypoint::Waypoint(std::string xVal, std::string yVal, std::string yawVal)
+    : x{std::move(xVal)},
+      y{std::move(yVal)},
+      yaw{std::move(yawVal)} {}
+
+// Planner class
+
+// PUBLIC API
+
+Planner::Planner(ros::NodeHandle& nodeHandle, std::string waypointsFile,
+                 std::string controllerType)
     : robotStateSubscriber_{nodeHandle.subscribe(
-          "/robot_state", 10, &Planner::robotStateCallback, this)},
-      waypointPublisher_{
-          nodeHandle.advertise<gem_manager::Waypoint>("waypoints_pp", 10)} {
+          "/gem_manager/robot_state", 10, &Planner::robotStateCallback, this)},
+      waypointPublisher_{nodeHandle.advertise<gem_manager::WaypointsBatch>(
+          "gem_manager/waypoints", 10)} {
   const std::string waypointsFullPath{ros::package::getPath("gem_manager") +
                                       "/gem_planner/waypoints/" +
-                                      waypointsFile};
+                                      std::move(waypointsFile)};
   loadWaypoints(waypointsFullPath);
+
+  if (controllerType == "PurePursuit") {
+    pathTrackingController_ = std::make_unique<PurePursuit>(waypoints_);
+  } else if (controllerType == "Stanley") {
+    pathTrackingController_ = std::make_unique<Stanley>(waypoints_);
+  } else {
+    throw std::logic_error("Unsupported controller type: " + controllerType);
+  }
+
+  waypointPublishingRate_ =
+      pathTrackingController_->getWaypointPublishingRate();
 }
 
 void Planner::startPublishing() {
@@ -52,41 +75,27 @@ void Planner::loadWaypoints(const std::string& filePath) {
   while (std::getline(file, line)) {
     std::stringstream lineStream{line};
     std::string field{};
-    std::vector<double> fields{};
+    std::vector<std::string> fields{};
 
     while (std::getline(lineStream, field, ',')) {
-      fields.push_back(std::stod(field));
+      fields.push_back(field);
     }
 
     if (fields.size() >= 3) {
-      double x{fields[0]};
-      double y{fields[1]};
-      double yaw{fields[2]};
+      std::string x{fields[0]};
+      std::string y{fields[1]};
+      std::string yaw{fields[2]};
       waypoints_.emplace_back(x, y, yaw);
     } else {
       ROS_ERROR("Invalid waypoint data");
     }
   }
   file.close();
-
-  waypointsSize_ = waypoints_.size();
 }
 
 void Planner::publishWaypoints() {
   if (isHealthy_) {
-    gem_manager::Waypoint waypointMsg;
-
-    waypointMsg.x = waypoints_[currentLocation_].x;
-    waypointMsg.y = waypoints_[currentLocation_].y;
-    waypointMsg.yaw = waypoints_[currentLocation_].yaw;
-
-    waypointPublisher_.publish(waypointMsg);
-
-    if (currentLocation_ == waypointsSize_ - 1) {
-      currentLocation_ = 0;
-    } else {
-      ++currentLocation_;
-    }
+    waypointPublisher_.publish(pathTrackingController_->update());
 
   } else {
     // Check if the recovery time has elapsed to reset the health status

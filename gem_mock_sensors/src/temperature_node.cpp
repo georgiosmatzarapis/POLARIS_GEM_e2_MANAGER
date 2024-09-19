@@ -7,8 +7,8 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "temperature_node");
   ros::NodeHandle nodeHandle{};
 
-  ros::Publisher temperaturePublisher{
-      nodeHandle.advertise<std_msgs::Float32>("/mock/temperature", 1000)};
+  ros::Publisher temperaturePublisher{nodeHandle.advertise<std_msgs::Float32>(
+      "/gem_manager/temperature", 1000)};
 
   ros::Rate loopRate{1};
 

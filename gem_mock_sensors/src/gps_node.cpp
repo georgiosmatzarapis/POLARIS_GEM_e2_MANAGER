@@ -7,8 +7,8 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "gps_node");
   ros::NodeHandle nodeHandle{};
 
-  ros::Publisher gpsAccuracyPublisher{
-      nodeHandle.advertise<std_msgs::Float32>("/mock/gps_accuracy", 1000)};
+  ros::Publisher gpsAccuracyPublisher{nodeHandle.advertise<std_msgs::Float32>(
+      "/gem_manager/gps_accuracy", 1000)};
 
   ros::Rate loopRate{1};
 

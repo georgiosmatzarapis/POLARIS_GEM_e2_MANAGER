@@ -7,8 +7,8 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "signal_node");
   ros::NodeHandle nodeHandle{};
 
-  ros::Publisher signalPublisher{
-      nodeHandle.advertise<std_msgs::Int32>("/mock/signal_strength", 1000)};
+  ros::Publisher signalPublisher{nodeHandle.advertise<std_msgs::Int32>(
+      "/gem_manager/signal_strength", 1000)};
 
   ros::Rate loopRate{1};
 

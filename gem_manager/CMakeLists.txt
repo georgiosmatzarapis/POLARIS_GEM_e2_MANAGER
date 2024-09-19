@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_message_files(
  DIRECTORY gem_planner/msg
- FILES Waypoint.msg
+ FILES Waypoint.msg WaypointsBatch.msg
 )
 
 generate_messages(
@@ -50,6 +50,8 @@ target_link_libraries(state_manager_node
 add_executable(planner_node
  gem_planner/src/planner_node.cpp
  gem_planner/src/planner.cpp
+ gem_planner/src/controllers/pure_pursuit.cpp
+ gem_planner/src/controllers/stanley.cpp
 )
 target_include_directories(planner_node PRIVATE
  gem_planner/include

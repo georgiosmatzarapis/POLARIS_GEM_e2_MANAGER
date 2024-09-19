@@ -11,14 +11,14 @@ namespace gem_state_manager {
 
 void RunningState::handleEvent(StateManager& stateManager, Event event,
                                const std::string& data) {
-  using enum Event;
+  // using enum Event; // C++ 20 onwards
 
   ROS_INFO("RunningState handling event: %s, value: %s",
            eventToString(event).c_str(), data.c_str());
 
-  if (event == BATTERY_LOW || event == TEMPERATURE_HIGH ||
-      event == GPS_INACCURATE || event == SIGNAL_LOST || event == SIGNAL_LOW ||
-      event == EMERGENCY) {
+  if (event == Event::BATTERY_LOW || event == Event::TEMPERATURE_HIGH ||
+      event == Event::GPS_INACCURATE || event == Event::SIGNAL_LOST ||
+      event == Event::SIGNAL_LOW || event == Event::EMERGENCY) {
     stateManager.setState(std::make_unique<ErrorState>());
   }
 }
