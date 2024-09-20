@@ -4,5 +4,4 @@
   <param name="controller_type" value="PurePursuit" />
  </node>
  <node name="state_manager_node" pkg="gem_manager" type="state_manager_node" output="screen" />
- <node name="signal_node" pkg="gem_mock_sensors" type="signal_node" output="screen" />
 </launch>
