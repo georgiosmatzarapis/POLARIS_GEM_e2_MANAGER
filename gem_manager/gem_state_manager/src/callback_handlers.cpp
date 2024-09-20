@@ -2,6 +2,7 @@
 
 #include "gem_state_manager/callback_handlers.hpp"
 #include "gem_state_manager/state_manager.hpp"
+#include "ros1_lib/subscriber.hpp"
 
 namespace gem_state_manager {
 
@@ -9,30 +10,51 @@ namespace gem_state_manager {
 
 CallbackHandlers::CallbackHandlers(ros::NodeHandle& nodeHandle)
     : nodeHandle_{nodeHandle},
+      batterySubscriber_{
+          std::make_unique<ros1_lib::Subscriber<std_msgs::Float32>>(
+              nodeHandle_)},
+      temperatureSubscriber_{
+          std::make_unique<ros1_lib::Subscriber<std_msgs::Float32>>(
+              nodeHandle_)},
+      gpsAccuracySubscriber_{
+          std::make_unique<ros1_lib::Subscriber<std_msgs::Float32>>(
+              nodeHandle_)},
+      signalSubscriber_{
+          std::make_unique<ros1_lib::Subscriber<std_msgs::Int32>>(nodeHandle_)},
+      emergencyButtonSubscriber_{
+          std::make_unique<ros1_lib::Subscriber<std_msgs::Bool>>(nodeHandle_)},
       stateManagerPtr_{nullptr} {}
 
 void CallbackHandlers::initSubscriptions(StateManager& stateManager) {
   stateManagerPtr_ = &stateManager;
 
-  batterySubscriber_ =
-      nodeHandle_.subscribe("/gem_manager/battery_level", 1000,
-                            &CallbackHandlers::batteryCallback, this);
+  batterySubscriber_->subscribe("/gem_manager/battery_level", 1000,
+                                [this](const std_msgs::Float32::ConstPtr& msg) {
+                                  this->batteryCallback(msg);
+                                });
 
-  temperatureSubscriber_ =
-      nodeHandle_.subscribe("/gem_manager/temperature", 1000,
-                            &CallbackHandlers::temperatureCallback, this);
+  temperatureSubscriber_->subscribe(
+      "/gem_manager/temperature", 1000,
+      [this](const std_msgs::Float32::ConstPtr& msg) {
+        this->temperatureCallback(msg);
+      });
 
-  gpsAccuracySubscriber_ =
-      nodeHandle_.subscribe("/gem_manager/gps_accuracy", 1000,
-                            &CallbackHandlers::gpsAccuracyCallback, this);
+  gpsAccuracySubscriber_->subscribe(
+      "/gem_manager/gps_accuracy", 1000,
+      [this](const std_msgs::Float32::ConstPtr& msg) {
+        this->gpsAccuracyCallback(msg);
+      });
 
-  signalSubscriber_ =
-      nodeHandle_.subscribe("/gem_manager/signal_strength", 1000,
-                            &CallbackHandlers::signalCallback, this);
+  signalSubscriber_->subscribe("/gem_manager/signal_strength", 1000,
+                               [this](const std_msgs::Int32::ConstPtr& msg) {
+                                 this->signalCallback(msg);
+                               });
 
-  emergencyButtonSubscriber_ =
-      nodeHandle_.subscribe("/gem_manager/emergency_button", 1000,
-                            &CallbackHandlers::emergencyButtonCallback, this);
+  emergencyButtonSubscriber_->subscribe(
+      "/gem_manager/emergency_button", 1000,
+      [this](const std_msgs::Bool::ConstPtr& msg) {
+        this->emergencyButtonCallback(msg);
+      });
 }
 
 // PRIVATE API

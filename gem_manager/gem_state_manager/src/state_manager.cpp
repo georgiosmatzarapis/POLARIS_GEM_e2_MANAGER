@@ -1,12 +1,12 @@
 // author: georgiosmatzarapis
 
 #include <ros/ros.h>
-#include <std_msgs/String.h>
 
 #include "gem_state_manager/callback_handlers.hpp"
 #include "gem_state_manager/state_manager.hpp"
 #include "gem_state_manager/states/idle.hpp"
 #include "gem_state_manager/states/running.hpp"
+#include "ros1_lib/publisher.hpp"
 
 namespace gem_state_manager {
 
@@ -15,8 +15,8 @@ namespace gem_state_manager {
 StateManager::StateManager(ros::NodeHandle& nodeHandle,
                            CallbackHandlers& callbackHandlers)
     : currentState_{std::make_unique<IdleState>()},
-      statePublisher_{nodeHandle.advertise<std_msgs::String>(
-          "gem_manager/robot_state", 10)} {
+      statePublisher_{std::make_unique<ros1_lib::Publisher<std_msgs::String>>(
+          nodeHandle, "gem_manager/robot_state", 10)} {
   callbackHandlers.initSubscriptions(*this);
 }
 
@@ -52,7 +52,7 @@ std::string StateManager::getCurrentState() const noexcept {
 void StateManager::publishState() const {
   std_msgs::String stateMsg;
   stateMsg.data = getCurrentState();
-  statePublisher_.publish(stateMsg);
+  statePublisher_->publish(stateMsg);
 }
 
 } // namespace gem_state_manager

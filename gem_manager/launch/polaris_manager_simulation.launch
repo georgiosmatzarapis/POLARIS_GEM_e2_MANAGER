@@ -1,5 +1,6 @@
 <launch>
  <node name="planner_node" pkg="gem_manager" type="planner_node" output="screen">
+  <!-- Possible values for controller_type: PurePursuit, Stanley -->
   <param name="controller_type" value="PurePursuit" />
  </node>
  <node name="state_manager_node" pkg="gem_manager" type="state_manager_node" output="screen" />

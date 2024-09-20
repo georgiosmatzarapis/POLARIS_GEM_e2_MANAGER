@@ -3,12 +3,13 @@
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
 
+#include "ros1_lib/publisher.hpp"
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "emergency_stop_node");
-  ros::NodeHandle nodeHandle{};
 
-  ros::Publisher emergencyButtonPublisher{nodeHandle.advertise<std_msgs::Bool>(
-      "/gem_manager/emergency_button", 1000)};
+  ros1_lib::Publisher<std_msgs::Bool> emergencyButtonPublisher{
+      "/gem_manager/emergency_button", 1000};
 
   ros::Rate loopRate{1};
 

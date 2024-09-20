@@ -3,12 +3,13 @@
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
 
+#include "ros1_lib/publisher.hpp"
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "battery_node");
-  ros::NodeHandle nodeHandle{};
 
-  ros::Publisher batteryPublisher{nodeHandle.advertise<std_msgs::Float32>(
-      "/gem_manager/battery_level", 1000)};
+  ros1_lib::Publisher<std_msgs::Float32> batteryPublisher{
+      "/gem_manager/battery_level", 1000};
 
   ros::Rate loopRate{1};
 

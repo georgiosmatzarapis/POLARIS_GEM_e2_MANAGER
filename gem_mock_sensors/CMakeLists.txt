@@ -4,12 +4,13 @@ project(gem_mock_sensors LANGUAGES CXX
  DESCRIPTION "The gem_mock_sensors project"
  HOMEPAGE_URL "https://github.com/georgiosmatzarapis/POLARIS_GEM_e2_MANAGER.git")
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(catkin REQUIRED COMPONENTS
  roscpp
  std_msgs
+ ros1_lib
 )
 
 catkin_package()

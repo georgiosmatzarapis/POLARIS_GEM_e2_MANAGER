@@ -7,6 +7,8 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Int32.h>
 
+#include "core/subscriber.hpp"
+
 namespace gem_state_manager {
 
 class StateManager;
@@ -20,11 +22,11 @@ class CallbackHandlers final {
  private:
   ros::NodeHandle& nodeHandle_;
   StateManager* stateManagerPtr_;
-  ros::Subscriber batterySubscriber_;
-  ros::Subscriber temperatureSubscriber_;
-  ros::Subscriber gpsAccuracySubscriber_;
-  ros::Subscriber signalSubscriber_;
-  ros::Subscriber emergencyButtonSubscriber_;
+  std::unique_ptr<core::Subscriber<std_msgs::Float32>> batterySubscriber_;
+  std::unique_ptr<core::Subscriber<std_msgs::Float32>> temperatureSubscriber_;
+  std::unique_ptr<core::Subscriber<std_msgs::Float32>> gpsAccuracySubscriber_;
+  std::unique_ptr<core::Subscriber<std_msgs::Int32>> signalSubscriber_;
+  std::unique_ptr<core::Subscriber<std_msgs::Bool>> emergencyButtonSubscriber_;
   std::mutex stateManagerMutex_;
 
   void batteryCallback(const std_msgs::Float32::ConstPtr& msg);

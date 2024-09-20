@@ -4,6 +4,8 @@
 
 #include <std_msgs/String.h>
 
+#include "core/publisher.hpp"
+#include "core/subscriber.hpp"
 #include "gem_planner/controllers/path_tracking_controller.hpp"
 
 namespace gem_planner {
@@ -24,8 +26,9 @@ class Planner final {
   void startPublishing();
 
  private:
-  ros::Subscriber robotStateSubscriber_;
-  ros::Publisher waypointPublisher_;
+  std::unique_ptr<core::Subscriber<std_msgs::String>> robotStateSubscriber_;
+  std::unique_ptr<core::Publisher<gem_manager::WaypointsBatch>>
+      waypointPublisher_;
   std::vector<Waypoint> waypoints_{};
   bool isHealthy_{false};
   ros::Time lastErrorTime_{ros::Time(0)};

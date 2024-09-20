@@ -7,6 +7,8 @@
 #include "gem_planner/controllers/pure_pursuit.hpp"
 #include "gem_planner/controllers/stanley.hpp"
 #include "gem_planner/planner.hpp"
+#include "ros1_lib/publisher.hpp"
+#include "ros1_lib/subscriber.hpp"
 
 namespace gem_planner {
 
@@ -25,10 +27,18 @@ Waypoint::Waypoint(std::string xVal, std::string yVal, std::string yawVal)
 
 Planner::Planner(ros::NodeHandle& nodeHandle, std::string waypointsFile,
                  std::string controllerType)
-    : robotStateSubscriber_{nodeHandle.subscribe(
-          "/gem_manager/robot_state", 10, &Planner::robotStateCallback, this)},
-      waypointPublisher_{nodeHandle.advertise<gem_manager::WaypointsBatch>(
-          "gem_manager/waypoints", 10)} {
+    : robotStateSubscriber_{std::make_unique<
+          ros1_lib::Subscriber<std_msgs::String>>(nodeHandle)},
+      waypointPublisher_{
+          std::make_unique<ros1_lib::Publisher<gem_manager::WaypointsBatch>>(
+              nodeHandle, "gem_manager/waypoints", 10)} {
+
+  robotStateSubscriber_->subscribe(
+      "/gem_manager/robot_state", 10,
+      [this](const std_msgs::String::ConstPtr& msg) {
+        this->robotStateCallback(msg);
+      });
+
   const std::string waypointsFullPath{ros::package::getPath("gem_manager") +
                                       "/gem_planner/waypoints/" +
                                       std::move(waypointsFile)};
@@ -95,7 +105,7 @@ void Planner::loadWaypoints(const std::string& filePath) {
 
 void Planner::publishWaypoints() {
   if (isHealthy_) {
-    waypointPublisher_.publish(pathTrackingController_->update());
+    waypointPublisher_->publish(pathTrackingController_->update());
 
   } else {
     // Check if the recovery time has elapsed to reset the health status

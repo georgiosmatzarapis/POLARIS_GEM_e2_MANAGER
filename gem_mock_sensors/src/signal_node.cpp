@@ -3,12 +3,13 @@
 #include <ros/ros.h>
 #include <std_msgs/Int32.h>
 
+#include "ros1_lib/publisher.hpp"
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "signal_node");
-  ros::NodeHandle nodeHandle{};
 
-  ros::Publisher signalPublisher{nodeHandle.advertise<std_msgs::Int32>(
-      "/gem_manager/signal_strength", 1000)};
+  ros1_lib::Publisher<std_msgs::Int32> signalPublisher{
+      "/gem_manager/signal_strength", 1000};
 
   ros::Rate loopRate{1};
 

@@ -4,13 +4,14 @@ project(gem_manager LANGUAGES CXX
  DESCRIPTION "The gem_manager project"
  HOMEPAGE_URL "https://github.com/georgiosmatzarapis/POLARIS_GEM_e2_MANAGER.git")
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(catkin REQUIRED COMPONENTS
  roscpp
  std_msgs
  roslib
+ ros1_lib
  message_generation
 )
 
@@ -25,7 +26,7 @@ generate_messages(
 )
 
 catkin_package(
-  CATKIN_DEPENDS message_runtime roscpp std_msgs
+  CATKIN_DEPENDS message_runtime roscpp std_msgs roslib ros1_lib
 )
 
 include_directories(

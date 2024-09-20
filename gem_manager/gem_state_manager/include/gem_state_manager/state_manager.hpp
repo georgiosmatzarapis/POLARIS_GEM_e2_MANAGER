@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <std_msgs/String.h>
+
+#include "core/publisher.hpp"
 #include "gem_state_manager/states/robot_state.hpp"
 
 namespace gem_state_manager {
@@ -23,7 +26,7 @@ class StateManager final {
 
  private:
   std::unique_ptr<RobotState> currentState_;
-  ros::Publisher statePublisher_;
+  std::unique_ptr<core::Publisher<std_msgs::String>> statePublisher_;
   mutable std::mutex stateMutex_;
 
   void publishState() const;

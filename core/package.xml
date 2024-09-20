@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package format="2">
+ <name>core</name>
+ <version>1.0.0</version>
+ <description>The core package</description>
+ <author email="matzarapisg@outlook.com.gr">Georgios Matzarapis</author>
+ <maintainer email="matzarapisg@outlook.com.gr">Georgios Matzarapis</maintainer>
+ <url type="website">https://github.com/georgiosmatzarapis/POLARIS_GEM_e2_MANAGER.git</url>
+ <license>MIT</license>
+ <buildtool_depend>catkin</buildtool_depend>
+</package>
