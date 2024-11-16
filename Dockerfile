@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://gitlab.engr.illinois.edu/gemillins/POLARIS_GEM_e2.git /home/${USER}/gem_ws/src/POLARIS_GEM_e2 && \
-    git clone https://${GITHUB_TOKEN}:x-oauth-basic@github.com/georgiosmatzarapis/POLARIS_GEM_e2_MANAGER.git /home/${USER}/gem_ws/src/POLARIS_GEM_e2_MANAGER
+    git clone https://github.com/georgiosmatzarapis/POLARIS_GEM_e2_MANAGER.git /home/${USER}/gem_ws/src/POLARIS_GEM_e2_MANAGER
 
 # Set-up PurePursuit controller
 RUN mv /home/${USER}/gem_ws/src/POLARIS_GEM_e2_MANAGER/path_tracking_controllers/pure_pursuit/pure_pursuit_sim.py \
