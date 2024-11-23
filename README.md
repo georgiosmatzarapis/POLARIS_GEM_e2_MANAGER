@@ -1,6 +1,6 @@
-# Polaris Gem e2 Manager
+# Polaris GEM e2 Manager
 
-This is a high level manager of the [Polaris Gem e2](https://gitlab.engr.illinois.edu/gemillins/POLARIS_GEM_e2.git). The system behind it has been built to receive mocked sensor data and control the vehicle's course based on them.
+This is a high level manager of the [Polaris GEM e2](https://gitlab.engr.illinois.edu/gemillins/POLARIS_GEM_e2.git). The system behind it, has been built to receive mocked sensor data and control the vehicle's course based on them.
 
 ## Environment
 
